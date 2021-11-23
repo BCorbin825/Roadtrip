@@ -2,6 +2,9 @@
 #include <iostream>
 #include <string>
 #include <unordered_map>
+#include <vector>
+#include <set>
+#include <climits>
 
 using namespace std;
 
@@ -64,7 +67,42 @@ vector<string> Graph::GetAdjacent(string city) {  // Get all vertices directly c
 }
 
 void Graph::PrintGraph() {  // Print all vertices
-    for (auto i : adjList) { // Iterate through graph
+    for (auto i : adjList) { 
         cout << i.first << endl; // Print city names
     }
+}
+
+vector<int> dijkstra(string src) {
+    vector<int> parent(adjList.size(), -1);
+    vector<int> distance(adjList.size(), INT_MAX);
+    set<int> visited;
+    set<int> notVisited;
+
+    for (int i = 0; i < adjList.size(); i++) {
+        notVisited.insert(i);
+    }
+    int current = src;
+    distance[src] = 0;
+    while (visited.size() != adjList.size()) {
+        for (auto iter : adjList[current]) {
+            int to = iter.first;
+            int newDistance = distance[current] + iter.second;
+            if (newDistance < distance[to]) {
+                distance[to] = newDistance;
+                parent[to] = current;
+            }
+        }
+
+        visited.insert(current);
+        notVisited.erase(current);
+        int lowestDistance = INT_MAX;
+
+        for (auto iter : notVisited) {
+            if (distance[iter] < lowestDistance) {
+                current = iter;
+                lowestDistance = distance[iter];
+            }
+        }
+    }
+    return distance;
 }

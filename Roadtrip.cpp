@@ -14,7 +14,7 @@ int main() {
     unordered_map<string, Texture> textures;
     unordered_map<string, Sprite> sprites;
     LoadImages(textures, sprites);
-    // added comment
+  
     while (window.isOpen()) {
         Event event;
         while (window.pollEvent(event))
